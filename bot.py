@@ -15,7 +15,7 @@ r = praw.Reddit(
     password=PASSWORD,
     client_id=CLIENT_ID,
     client_secret=SECRET,
-    user_agent='linux:arXiv_abstract_bot:0.2 (by /u/arXiv_abstract_bot'
+    user_agent='linux:arXiv_abstract_bot:0.2 (by /u/arXiv_abstract_bot)'
     )
 
 subreddit = r.subreddit('machinelearning')
@@ -70,6 +70,7 @@ def comment():
 
 
 if __name__ == "__main__":
-    while True:
-        comment()
-        time.sleep(30)
+
+    # while True:
+    #     comment()
+    #     time.sleep(30)
