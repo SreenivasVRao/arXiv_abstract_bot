@@ -2,21 +2,23 @@ import praw
 import requests
 import bs4
 import html2text
-import time
+import time, os
 
+def get_bot():
+    PRAW_CLIENT_ID = os.environ.get('PRAW_CLIENT_ID')
+    PRAW_CLIENT_SECRET = os.environ.get('PRAW_CLIENT_SECRET')
+    PRAW_PASSWORD = os.environ.get('PRAW_PASSWORD')
+    PRAW_USERNAME = os.environ.get('PRAW_USERNAME')
+    PRAW_USERAGENT = 'linux:arXiv_abstract_bot:0.2 (by /u/arXiv_abstract_bot)'
+    return praw.Reddit(
+        username=PRAW_USERNAME,
+        password=PRAW_PASSWORD,
+        client_id=PRAW_CLIENT_ID,
+        client_secret=PRAW_CLIENT_SECRET,
+        user_agent=PRAW_USERAGENT
+        )
 
-USERNAME = 'arXiv_abstract_bot'
-PASSWORD = '********'
-CLIENT_ID = '*******'
-SECRET = '********'
-
-r = praw.Reddit(
-    username=USERNAME,
-    password=PASSWORD,
-    client_id=CLIENT_ID,
-    client_secret=SECRET,
-    user_agent='linux:arXiv_abstract_bot:0.2 (by /u/arXiv_abstract_bot)'
-    )
+r = get_bot()
 
 subreddit = r.subreddit('machinelearning')
 
@@ -52,7 +54,7 @@ def comment():
                 if post.id in alreadydone:
                     continue
                 for comment in post.comments:
-                    if str(comment.author) == USERNAME:
+                    if str(comment.author) == 'arxiv_abstract_bot':
                         break
                 else:
                     landing_url = post.url
@@ -71,6 +73,7 @@ def comment():
 
 if __name__ == "__main__":
 
-    # while True:
+    while True:
+        pass
     #     comment()
     #     time.sleep(30)
