@@ -11,7 +11,6 @@ def get_bot():
     PRAW_PASSWORD = os.environ.get('PRAW_PASSWORD')
     PRAW_USERNAME = os.environ.get('PRAW_USERNAME')
     PRAW_USERAGENT = os.environ.get('PRAW_USERAGENT')
-    print PRAW_USERAGENT, PRAW_CLIENT_SECRET, PRAW_CLIENT_ID, PRAW_PASSWORD, PRAW_USERNAME
     return praw.Reddit(
         username=PRAW_USERNAME,
         password=PRAW_PASSWORD,
@@ -55,7 +54,7 @@ def comment(cache):
         all_posts = subreddit.new(limit=100)
         for post in all_posts:
             if 'arxiv.org' in post.url:
-                if cache.get(post.id) is None:
+                if cache.get(post.id) and cache.get(post.id) is 'T':
                     print "Parsed this post already: %s"%(post.url)
                     continue
                 for comment in post.comments:
