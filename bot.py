@@ -3,7 +3,7 @@ import requests
 import bs4
 import html2text
 import time, os
-
+import bmemcached
 
 def get_bot():
     PRAW_CLIENT_ID = os.environ.get('PRAW_CLIENT_ID')
@@ -25,7 +25,7 @@ r = get_bot()
 
 subreddit = r.subreddit('pythonforengineers')
 
-alreadydone = set()
+# alreadydone = set()
 
 
 def scrape_arxiv(url):
@@ -49,13 +49,14 @@ def scrape_arxiv(url):
     return response
 
 
-def comment():
+def comment(cache):
     print(time.asctime(), "searching")
     try:
         all_posts = subreddit.new(limit=100)
         for post in all_posts:
             if 'arxiv.org' in post.url:
-                if post.id in alreadydone:
+                if cache.get(post.id) is None:
+                    print "Parsed this post already: %s"%(post.url)
                     continue
                 for comment in post.comments:
                     if str(comment.author) == 'arxiv_abstract_bot':
@@ -68,15 +69,30 @@ def comment():
 
                     response = scrape_arxiv(landing_url)
                     post.reply(response)
-                    alreadydone.add(post.id)
+                    cache.set(post.id, 'T')
+                    print "Parsed post: %s"%(post.url)
                     print(landing_url, response)
                     time.sleep(10)
     except Exception as error:
         print(error)
 
 
+def get_memcache_client():
+    # Store IDs of comments that the bot has already replied to.
+    # Read local cache by default
+
+    MEMCACHEDCLOUD_SERVERS = os.environ.get('MEMCACHEDCLOUD_SERVERS')
+    MEMCACHEDCLOUD_USERNAME = os.environ.get('MEMCACHEDCLOUD_USERNAME')
+    MEMCACHEDCLOUD_PASSWORD = os.environ.get('MEMCACHEDCLOUD_PASSWORD')
+
+    client = bmemcached.Client((MEMCACHEDCLOUD_SERVERS,), MEMCACHEDCLOUD_USERNAME,
+                           MEMCACHEDCLOUD_PASSWORD)
+    return client
+
+
 if __name__ == "__main__":
+    cache = get_memcache_client()
 
     while True:
-        comment()
+        comment(cache)
         time.sleep(30)
