@@ -6,6 +6,10 @@ html2text==2018.1.9
 idna==2.8
 praw==6.0.0
 prawcore==1.0.0
+python-binary-memcached==0.28.0
 requests==2.21.0
+six==1.12.0
+typing==3.6.6
+uhashring==1.1
 update-checker==0.16
 urllib3==1.24.1
