@@ -55,7 +55,7 @@ def comment(cache):
         for post in all_posts:
             if 'arxiv.org' in post.url:
                 if cache.get(post.id) and cache.get(post.id) is 'T':
-                    print "Parsed this post already: %s"%(post.url)
+                    print "Parsed this post already: %s"%(post.permalink)
                     continue
                 for comment in post.comments:
                     if str(comment.author) == 'arxiv_abstract_bot':
@@ -69,7 +69,7 @@ def comment(cache):
                     response = scrape_arxiv(landing_url)
                     post.reply(response)
                     cache.set(post.id, 'T')
-                    print "Parsed post: %s"%(post.url)
+                    print "Parsed post: %s"%(post.permalink)
                     print(landing_url, response)
                     time.sleep(10)
     except Exception as error:
