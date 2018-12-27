@@ -4,12 +4,14 @@ import bs4
 import html2text
 import time, os
 
+
 def get_bot():
     PRAW_CLIENT_ID = os.environ.get('PRAW_CLIENT_ID')
     PRAW_CLIENT_SECRET = os.environ.get('PRAW_CLIENT_SECRET')
     PRAW_PASSWORD = os.environ.get('PRAW_PASSWORD')
     PRAW_USERNAME = os.environ.get('PRAW_USERNAME')
-    PRAW_USERAGENT = 'linux:arXiv_abstract_bot:0.2 (by /u/arXiv_abstract_bot)'
+    PRAW_USERAGENT = os.environ.get('PRAW_USERAGENT')
+    print PRAW_USERAGENT, PRAW_CLIENT_SECRET, PRAW_CLIENT_ID, PRAW_PASSWORD, PRAW_USERNAME
     return praw.Reddit(
         username=PRAW_USERNAME,
         password=PRAW_PASSWORD,
@@ -18,11 +20,13 @@ def get_bot():
         user_agent=PRAW_USERAGENT
         )
 
+
 r = get_bot()
 
-subreddit = r.subreddit('machinelearning')
+subreddit = r.subreddit('pythonforengineers')
 
 alreadydone = set()
+
 
 def scrape_arxiv(url):
     r = requests.get(url)
@@ -74,6 +78,5 @@ def comment():
 if __name__ == "__main__":
 
     while True:
-        pass
-    #     comment()
-    #     time.sleep(30)
+        comment()
+        time.sleep(30)
