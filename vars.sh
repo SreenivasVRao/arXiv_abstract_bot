@@ -1,0 +1,5 @@
+export PRAW_CLIENT_ID=
+export PRAW_CLIENT_SECRET=
+export PRAW_PASSWORD=
+export PRAW_USERNAME=
+export PRAW_USERAGENT=
