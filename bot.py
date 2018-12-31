@@ -22,7 +22,7 @@ def get_bot():
 
 r = get_bot()
 
-subreddit = r.subreddit('pythonforengineers')
+subreddit = r.subreddit('machinelearning')
 
 # alreadydone = set()
 
@@ -54,11 +54,12 @@ def comment(cache):
         all_posts = subreddit.new(limit=100)
         for post in all_posts:
             if 'arxiv.org' in post.url:
+                print post.permalink
                 if cache.get(post.id) and cache.get(post.id) is 'T':
                     print "Parsed this post already: %s"%(post.permalink)
                     continue
                 for comment in post.comments:
-                    if str(comment.author) == 'arxiv_abstract_bot':
+                    if str(comment.author) == 'arXiv_abstract_bot':
                         break
                 else:
                     landing_url = post.url
