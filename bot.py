@@ -54,7 +54,6 @@ def comment(cache):
         all_posts = subreddit.new(limit=100)
         for post in all_posts:
             if 'arxiv.org' in post.url:
-                print post.permalink
                 if cache.get(post.id) and cache.get(post.id) is 'T':
                     print "Parsed this post already: %s"%(post.permalink)
                     continue
