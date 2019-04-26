@@ -46,9 +46,10 @@ def scrape_arxiv(arxiv_id):
     title = soup.select('.title')[0]
     title =  html2text.html2text(title.decode()).replace('\n', ' ')[2:]
 
-    abs_link = u'[Landing page]({})'.format(url)
-    pdf_link = u'[PDF link](https://arxiv.org/pdf/{})'.format(arxiv_id)
-    links = u'{}  {}'.format(pdf_link, abs_link)
+    abs_link = u'[Abstract page]({})'.format(url)
+    pdf_link = u'[Read as PDF](https://arxiv.org/pdf/{})'.format(arxiv_id)
+    web_link = u'[Read as web page on arXiv Vanity](https://www.arxiv-vanity.com/papers/{}/)'.format(arxiv_id)
+    links = u'{} | {} | {}'.format(pdf_link, abs_link, web_link)
     response = '\n\n'.join([title, authors, abstract, links]) 
     return response
 
